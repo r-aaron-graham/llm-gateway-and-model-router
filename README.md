@@ -30,3 +30,14 @@ python -m pytest -q
 
 To add an adapter, subclass `providers.base.BaseProvider` and register it
 in `providers/__init__.py`.
+
+## Deployment verification
+
+Build the reviewer container from the repository root.
+
+```sh
+docker build -t reviewer-smoke .
+docker run --rm -p 127.0.0.1:8000:8000 reviewer-smoke
+```
+
+From another terminal, run `curl --fail http://127.0.0.1:8000/providers`. Expect HTTP 200. Stop the container with Ctrl+C when finished. Use the local provider for verification. Set provider credentials through the runtime environment only when deliberately enabling a live provider. Put access controls and rate limits in front of a shared deployment.
